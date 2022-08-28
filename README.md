@@ -34,7 +34,7 @@ graph TD
     paramSettings["models/*.json"]           -- used by    --> paramVariants
     paramVariants(["parameter_variants.py"]) -- updates on change  --> variants
     variants["variants/*.json"]              -- settings   --> scadGen
-    sourcecode["models/test.main.scad"]      -- sourcecode --> scadGen
+    sourcecode["models/*.scad"]              -- sourcecode --> scadGen
     scadGen(["openScad"])
     scadGen                                  --> png
     scadGen                                  --> stl
@@ -46,4 +46,15 @@ graph TD
 * Run `make clean` to clean out any existing generated stls
 * Change `parameter_generator.py` to match your needs then delete `models/*.json` file
 * Adapt `models/*.scad` to include your code
+* Update `makefile` changing these below settings to match your source name
+
+```make
+# Model Details
+PROJNAME = test
+SCAD_PATH = models/$(PROJNAME).scad
+JSON_PATH = models/$(PROJNAME).json
+```
+
 * Run `make all` to autogenerate the missing parameter setting list `models/*.json` and kick off the variations
+
+Let me know if instructions does not make sense and we can update it to make it clearer
