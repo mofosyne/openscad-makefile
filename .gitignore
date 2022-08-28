@@ -1,0 +1,5 @@
+*.vscode
+deps
+variants
+png
+stl
