@@ -18,11 +18,13 @@ ifeq ($(isWindows),Yes)
     RM_WILDCARD = del /Q /F /S
     MKDIR = mkdir
     RMDIR = rmdir /s /q
+    RM = del /Q /F
     PYTHON = python3
 else
     RM_WILDCARD = rm -f
     MKDIR = mkdir
     RMDIR = rm -rf
+    RM = rm -f
     PYTHON = python3
 endif
 
@@ -34,6 +36,9 @@ PARAGEN?=parameter_generator.py
 
 # Variation Generator
 VARGEN?=parameter_variants.py
+
+# Variation Generator
+HTMLGEN?=parameter_html.py
 
 # Model Details
 PROJNAME = test
@@ -54,12 +59,12 @@ VARIANTS_TARGETS = $(patsubst %,variants/%.json,$(VARIANTS))
 PNG_TARGETS      = $(patsubst %,png/$(PROJNAME).%.png,$(VARIANTS))
 STL_TARGETS      = $(patsubst %,stl/$(PROJNAME).%.stl,$(VARIANTS))
 
-# explicit wildcard expansion suppresses errors when no files are found
-include $(wildcard deps/*.deps)
-
 ################################################################################
 .PHONY: all variants png models clean dev
-all: $(JSON_PATH) variants png models
+all: $(JSON_PATH) variants png models index.html
+
+# explicit wildcard expansion suppresses errors when no files are found
+include $(wildcard deps/*.deps)
 
 variants: $(VARIANTS_TARGETS)
 png: $(PNG_TARGETS)
@@ -82,12 +87,17 @@ stl/$(PROJNAME).%.stl: variants/%.json $(SCAD_PATH)
 	-@ $(MKDIR) deps ||:
 	$(SCADC) -o $@ -d $(patsubst variants/%.json,deps/%.deps,$<) -p $< -P $(patsubst variants/%.json,%,$<) $(SCAD_PATH)
 
+index.html: $(JSON_PATH) $(PNG_TARGETS) $(STL_TARGETS)
+	$(info want to render index page  $(JSON_PATH) $(PNG_TARGETS) $(STL_TARGETS))
+	$(PYTHON) $(HTMLGEN) --JsonPath $(JSON_PATH) --Output $@
+
 # Clean Up
 clean:
 	- $(RMDIR) variants
 	- $(RMDIR) png
 	- $(RMDIR) stl
 	- $(RMDIR) deps
+	- $(RM) index.html
 
 # Used during development of this makefile
 dev:

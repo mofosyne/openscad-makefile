@@ -3,56 +3,38 @@
     "parameterSets": {
         "variation_1": {
             "$fn": "40",
-            "COINDIA": "10",
-            "COINHEIGHT": "1",
             "RODCOUNT": "1"
         },
         "variation_2": {
             "$fn": "40",
-            "COINDIA": "10",
-            "COINHEIGHT": "1",
             "RODCOUNT": "2"
         },
         "variation_3": {
             "$fn": "40",
-            "COINDIA": "10",
-            "COINHEIGHT": "1",
             "RODCOUNT": "3"
         },
         "variation_4": {
             "$fn": "40",
-            "COINDIA": "10",
-            "COINHEIGHT": "1",
             "RODCOUNT": "4"
         },
         "variation_5": {
             "$fn": "40",
-            "COINDIA": "10",
-            "COINHEIGHT": "1",
             "RODCOUNT": "5"
         },
         "variation_6": {
             "$fn": "40",
-            "COINDIA": "10",
-            "COINHEIGHT": "1",
             "RODCOUNT": "6"
         },
         "variation_7": {
             "$fn": "40",
-            "COINDIA": "10",
-            "COINHEIGHT": "1",
             "RODCOUNT": "7"
         },
         "variation_8": {
             "$fn": "40",
-            "COINDIA": "10",
-            "COINHEIGHT": "1",
             "RODCOUNT": "8"
         },
         "variation_9": {
             "$fn": "40",
-            "COINDIA": "10",
-            "COINHEIGHT": "1",
             "RODCOUNT": "9"
         }
     }

@@ -38,8 +38,11 @@ graph TD
     scadGen(["openScad"])
     scadGen                                  --> png
     scadGen                                  --> stl
-    png["png/*.png"];
-    stl["stl/*.stl"];
+    png["png/*.png"]                         -- used for image preview --> paramHTML
+    stl["stl/*.stl"]                         -- used for download link --> paramHTML
+    paramSettings                            -- used for documentation --> paramHTML
+    paramHTML(["parameter_html.py"])         -- generates  --> html
+    html["index.html"]
 ```
 
 ## Adapting to your project
