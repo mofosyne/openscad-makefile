@@ -92,8 +92,6 @@ if __name__ == "__main__":
             rowcount = i
             parameterSets[f"variation_{i}"] = {
                         "$fn": "40",
-                        "COINDIA": f"{coindia}",
-                        "COINHEIGHT": f"{coinheight}",
                         "RODCOUNT": f"{rowcount}"
                     }
 
