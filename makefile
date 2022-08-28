@@ -6,8 +6,15 @@
 ## make clean  delete all STL and all of it's variations
 ################################################################################
 
+
 # OS DETECT https://stackoverflow.com/questions/714100/os-detecting-makefile
+isWindows=
 ifeq ($(OS),Windows_NT)
+ifeq (, $(shell uname))
+	isWindows=Yes
+endif
+endif
+ifeq ($(isWindows),Yes)
     RM_WILDCARD = del /Q /F /S
     MKDIR = mkdir
     RMDIR = rmdir /s /q
@@ -15,7 +22,7 @@ ifeq ($(OS),Windows_NT)
 else
     RM_WILDCARD = rm -f
     MKDIR = mkdir
-    RMDIR = rmdir
+    RMDIR = rm -rf
     PYTHON = python3
 endif
 
