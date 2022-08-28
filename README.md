@@ -31,7 +31,7 @@ You need at least minimum:
 ```mermaid
 graph TD
     paramGen(["parameter_generator.py"])     -- generates if missing  --> paramSettings
-    paramSettings["models/open.main.json"]   -- used by    --> paramVariants
+    paramSettings["models/*.json"]           -- used by    --> paramVariants
     paramVariants(["parameter_variants.py"]) -- updates on change  --> variants
     variants["variants/*.json"]              -- settings   --> scadGen
     sourcecode["models/test.main.scad"]      -- sourcecode --> scadGen
