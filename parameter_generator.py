@@ -87,8 +87,6 @@ if __name__ == "__main__":
     if len(parameterSets) == 0 or args.force_write:
         ## Generate Parametric Settings
         for i in range(1,10,1):
-            coindia = 10
-            coinheight = 1
             rowcount = i
             parameterSets[f"variation_{i}"] = {
                         "$fn": "40",
