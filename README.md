@@ -18,6 +18,10 @@ Tip:
 This is a community supported build system so feel free to suggest change or
 put in a pull request for consideration.
 
+Below is an example screenshot of the html download page generation output used for an actual project (creating small challenge coins), which should give you an idea of it's capability in the field:
+
+![](example_html_electronworkshop.png)
+
 ## Minimum support
 
 This is intented to be used by windows users and linux users.
