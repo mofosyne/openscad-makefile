@@ -87,7 +87,7 @@ stl/$(PROJNAME).%.stl: variants/%.json $(SCAD_PATH)
 	-@ $(MKDIR) deps ||:
 	$(SCADC) -o $@ -d $(patsubst variants/%.json,deps/%.deps,$<) -p $< -P $(patsubst variants/%.json,%,$<) $(SCAD_PATH)
 
-index.html: $(JSON_PATH) $(PNG_TARGETS) $(STL_TARGETS)
+index.html: $(JSON_PATH) $(PNG_TARGETS) $(STL_TARGETS) $(HTMLGEN)
 	$(info want to render index page  $(JSON_PATH) $(PNG_TARGETS) $(STL_TARGETS))
 	$(PYTHON) $(HTMLGEN) --JsonPath $(JSON_PATH) --Output $@
 

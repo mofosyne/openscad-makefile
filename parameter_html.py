@@ -1,11 +1,14 @@
 import json
-import sys
 import argparse
-
-VARIANTSDIR="variants"
 
 ################################################################################
 ## Parametric File Write
+def variableNameToTitle(text):
+    s = text.replace("-", " ").replace("_", " ")
+    s = s.split()
+    if len(text) == 0:
+        return text
+    return ' '.join(i.capitalize() for i in s[0:])
 
 def get_current_parametric_json(filename:str):
     ## Write Parameter File
@@ -23,32 +26,55 @@ def get_current_parametric_json(filename:str):
 def write_parametric_html(parametricSettings:dict, project_name:str, filename:str):
     parameterSets = parametricSettings["parameterSets"]
     html_output = f"""
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
 <html>
 <head>
-<title>{project_name}</title>
+    <meta charset="utf-8">
+    <title>{variableNameToTitle(project_name)} OpenSCAD Models Download Page</title>
 </head>
 <body>
-<h1>{project_name}</h1>
+    <h1>{variableNameToTitle(project_name)} OpenSCAD Models Download Page</h1>
+
+    <h2 id="toc">Table Of Content</h2>
+    <ul class="toc_list">
 """
     for parameterSetName in parameterSets:
+        html_output += f"""\
+        <li><a href="#{parameterSetName}">{variableNameToTitle(parameterSetName)}</a></li>
+"""
+    html_output += f"""\
+    </ul>
+"""
+
+    # Content
+    for parameterSetName in parameterSets:
         html_output += f"""
-<h2>{parameterSetName}</h2>
-<img src="png/{project_name}.{parameterSetName}.png" alt="OpenSCAD generated preview of {parameterSetName}" height="100">
-<a href="stl/{project_name}.{parameterSetName}.stl">click to download</a>
+    <h2 id="{parameterSetName}">{variableNameToTitle(parameterSetName)}</h2>
+    <img src="png/{project_name}.{parameterSetName}.png" alt="OpenSCAD generated preview of {parameterSetName}" height="100">
+    <p><a href="stl/{project_name}.{parameterSetName}.stl" download>click to download</a></p>
+    <p><a href="#toc">click to jump back to TOC</a></p>
+"""
+        html_output += f"""\
+    <details>
+        <summary>Click To Show Parameter Settings Used In This Variation</summary>
+        <ul class="parameters">
 """
         for key, value in parameterSets[parameterSetName].items():
             html_output += f"""\
-<p>{key}:{value}</p>
+            <li><p>{key} : {value}</p></li>
 """
-
+        html_output += f"""\
+        </ul>
+    </details>
+"""
 
     html_output += f"""
 </body>
 </html>
 """
 
-    ## Write Parameter File
+    ## Write HTML File
     with open(filename, "w") as f:
         f.write(html_output)
 
