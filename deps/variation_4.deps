@@ -1,0 +1,3 @@
+stl/test.variation_4.stl: \
+	C:/Users/Brian/Documents/GitHub/openscad-makefile/models/testModule.scad \
+	models/test.scad
