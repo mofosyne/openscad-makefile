@@ -25,6 +25,20 @@ def get_current_parametric_json(filename:str):
 
 def write_parametric_html(parametricSettings:dict, project_name:str, filename:str):
     parameterSets = parametricSettings["parameterSets"]
+
+    # Detect Parameter Constants
+    firstSetValues = {}
+    setValuesIsVariable = {}
+    for parameterSetName in parameterSets:
+        for key, value in parameterSets[parameterSetName].items():
+            prevValue = firstSetValues.get(key, None)
+            if prevValue == None:
+                firstSetValues[key] = value
+                continue
+            if prevValue != value:
+                setValuesIsVariable[key] = True
+
+    # HTML Render
     html_output = f"""
 <!doctype html>
 <html lang="en">
@@ -32,6 +46,8 @@ def write_parametric_html(parametricSettings:dict, project_name:str, filename:st
 <head>
     <meta charset="utf-8">
     <title>{variableNameToTitle(project_name)} OpenSCAD Models Download Page</title>
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>{variableNameToTitle(project_name)} OpenSCAD Models Download Page</h1>
@@ -48,28 +64,56 @@ def write_parametric_html(parametricSettings:dict, project_name:str, filename:st
 """
 
     # Content
-    for parameterSetName in parameterSets:
-        html_output += f"""
-    <h2 id="{parameterSetName}">{variableNameToTitle(parameterSetName)}</h2>
-    <img src="png/{project_name}.{parameterSetName}.png" alt="OpenSCAD generated preview of {parameterSetName}" height="100">
-    <p><a href="stl/{project_name}.{parameterSetName}.stl" download>click to download</a></p>
-    <p><a href="#toc">click to jump back to TOC</a></p>
+    html_output += f"""\
+    <h2 id="constants">Common Parameters</h2>
+    <p>These are common values that are same in all variants below and is placed here to reduce clutter in the download list:</p>
+    <ul>
 """
-        html_output += f"""\
-    <details>
-        <summary>Click To Show Parameter Settings Used In This Variation</summary>
-        <ul class="parameters">
-"""
-        for key, value in parameterSets[parameterSetName].items():
+    for key, value in firstSetValues.items():
+        if setValuesIsVariable.get(key, None) != True:
             html_output += f"""\
-            <li><p>{key} : {value}</p></li>
+        <li><b>{key}</b> : {value} </li>
 """
-        html_output += f"""\
-        </ul>
-    </details>
+    html_output += f"""\
+    </ul>
 """
 
-    html_output += f"""
+    # Content
+    html_output += f"""\
+    <h2 id="download">Download</h2>
+    <table>
+        <tr>
+            <th>Contact</th>
+            <th>Name</th>
+            <th>Parameters</th>
+            <th>Download STL</th>
+            <th>Table Of Content</th>
+        </tr>
+"""
+    for parameterSetName in parameterSets:
+        html_output += f"""
+        <tr>
+            <th><a href="png/{project_name}.{parameterSetName}.png"><img src="png/{project_name}.{parameterSetName}.png" alt="OpenSCAD generated preview of {parameterSetName}" height="100"></a></th>
+            <th id="{parameterSetName}">{variableNameToTitle(parameterSetName)}</th>
+"""
+        html_output += f"""\
+            <th>
+                <ul class="parameters">
+"""
+        for key, value in parameterSets[parameterSetName].items():
+            if setValuesIsVariable.get(key, None) == True:
+                html_output += f"""\
+                    <li><b>{key}</b> : {value} </li>
+"""
+        html_output += f"""\
+                </ul>
+            </th>
+            <th><a href="stl/{project_name}.{parameterSetName}.stl" download>{project_name}.{parameterSetName}.stl</a></th>
+            <th><a href="#toc">TOC</a></th>
+        </tr>
+"""
+    html_output += f"""\
+    </table>
 </body>
 </html>
 """

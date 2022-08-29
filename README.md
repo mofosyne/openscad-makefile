@@ -51,7 +51,7 @@ graph TD
 * Adapt `models/*.scad` to include your code
 * Update `makefile` changing these below settings to match your source name
 
-```make
+```makefile
 # Model Details
 PROJNAME = test
 SCAD_PATH = models/$(PROJNAME).scad
@@ -61,3 +61,31 @@ JSON_PATH = models/$(PROJNAME).json
 * Run `make all` to autogenerate the missing parameter setting list `models/*.json` and kick off the variations
 
 Let me know if instructions does not make sense and we can update it to make it clearer
+
+## Tips
+
+### Compiling multiple makefile folders
+
+```makefile
+SUBDIRS = $(sort $(dir $(wildcard ./*/))) #folders to look for
+
+# OS DETECT https://stackoverflow.com/questions/714100/os-detecting-makefile
+isWindows=
+ifeq ($(OS),Windows_NT)
+ifeq (, $(shell uname))
+	isWindows=Yes
+endif
+endif
+ifeq ($(isWindows),Yes)
+    SPLITCOMMAND = &
+else
+    SPLITCOMMAND = ;
+endif
+
+# Stackoverflow: How to write a loop in a makefile https://stackoverflow.com/a/1491012/2850957
+.PHONY: all clean $(SUBDIRS)
+all:
+	$(foreach var,$(SUBDIRS),$(MAKE) --directory=$(var) all $(SPLITCOMMAND))
+clean:
+	$(foreach var,$(SUBDIRS),$(MAKE) --directory=$(var) clean $(SPLITCOMMAND))
+```
