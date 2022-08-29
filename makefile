@@ -73,7 +73,7 @@ models: $(STL_TARGETS)
 # Generate Variation
 variants/%.json: $(JSON_PATH)
 	-@ $(MKDIR) variants ||:
-	$(PYTHON) $(VARGEN) --JsonPath $(JSON_PATH) --WriteSingle $(patsubst variants/%.json,%,$@) --ForceWrite
+	$(PYTHON) $(VARGEN) --JsonPath $(JSON_PATH) --WriteSingle $(patsubst variants/%.json,%,$@)
 
 # Generate PNG
 png/$(PROJNAME).%.png: variants/%.json $(SCAD_PATH)
