@@ -89,7 +89,7 @@ stl/$(PROJNAME).%.stl: variants/%.json $(SCAD_PATH)
 
 index.html: $(JSON_PATH) $(PNG_TARGETS) $(STL_TARGETS) $(HTMLGEN)
 	$(info want to render index page  $(JSON_PATH) $(PNG_TARGETS) $(STL_TARGETS))
-	$(PYTHON) $(HTMLGEN) --JsonPath $(JSON_PATH) --Output $@
+	$(PYTHON) $(HTMLGEN) --ProjectName $(PROJNAME) --JsonPath $(JSON_PATH) --Output $@
 
 # Clean Up
 clean:
